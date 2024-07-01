@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as Dialog;
-import 'dart:async';
+import 'package:flutter/material.dart';
+
 import 'PickerLocalizations.dart';
 
 const bool __printDebug = false;
@@ -215,7 +217,8 @@ class Picker {
               actions.add(TextButton(
                   style: _getButtonStyle(ButtonTheme.of(context)),
                   onPressed: () async {
-                    if (onConfirmBefore != null && !(await onConfirmBefore!(this, selecteds))) {
+                    if (onConfirmBefore != null &&
+                        !(await onConfirmBefore!(this, selecteds))) {
                       return; // Cancel;
                     }
                     Navigator.pop<List<int>>(context, selecteds);
@@ -317,9 +320,14 @@ class PickerWidget<T> extends InheritedWidget {
 class _PickerWidget<T> extends StatefulWidget {
   final Picker picker;
   final ThemeData? themeData;
+  final BottomAppBarTheme? bottomAppBarTheme;
   final bool isModal;
   _PickerWidget(
-      {Key? key, required this.picker, this.themeData, required this.isModal})
+      {Key? key,
+      required this.picker,
+      this.themeData,
+      this.bottomAppBarTheme,
+      required this.isModal})
       : super(key: key);
 
   @override
@@ -330,9 +338,12 @@ class _PickerWidget<T> extends StatefulWidget {
 class PickerWidgetState<T> extends State<_PickerWidget> {
   final Picker picker;
   final ThemeData? themeData;
-  PickerWidgetState({required this.picker, this.themeData});
+  final BottomAppBarTheme? bottomAppBarThemeData;
+  PickerWidgetState(
+      {required this.picker, this.themeData, this.bottomAppBarThemeData});
 
   ThemeData? theme;
+  BottomAppBarTheme? bottomAppBarTheme;
   final List<FixedExtentScrollController> scrollController = [];
   final List<StateSetter?> _keys = [];
 
@@ -360,6 +371,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
   Widget build(BuildContext context) {
     // print("picker build ${ref++}");
     theme = themeData ?? Theme.of(context);
+    bottomAppBarTheme = bottomAppBarThemeData ?? BottomAppBarTheme.of(context);
 
     if (_wait && picker.smooth > 0) {
       Future.delayed(Duration(milliseconds: picker.smooth), () {
@@ -391,7 +403,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
                   bottom: BorderSide(color: theme!.dividerColor, width: 0.5),
                 ),
                 color: picker.headerColor == null
-                    ? (theme!.bottomAppBarColor)
+                    ? (bottomAppBarTheme!.color)
                     : picker.headerColor,
               ),
         ));
@@ -437,8 +449,8 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
             overflow: TextOverflow.ellipsis,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             style: style ??
-                theme!.textTheme.button!.copyWith(
-                    color: theme!.accentColor,
+                theme!.textTheme.labelLarge!.copyWith(
+                    color: theme!.colorScheme.secondary,
                     fontSize: Picker.DefaultTextSize)));
   }
 
@@ -450,8 +462,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
     if (picker.cancel != null) {
       items.add(DefaultTextStyle(
           style: picker.cancelTextStyle ??
-              theme!.textTheme.button!.copyWith(
-                  color: theme!.accentColor, fontSize: Picker.DefaultTextSize),
+              theme!.textTheme.labelLarge!.copyWith(
+                  color: theme!.colorScheme.secondary,
+                  fontSize: Picker.DefaultTextSize),
           child: picker.cancel!));
     } else {
       String? _cancelText =
@@ -469,7 +482,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
       child: picker.title == null
           ? picker.title
           : DefaultTextStyle(
-              style: theme!.textTheme.headline6!.copyWith(
+              style: theme!.textTheme.titleLarge!.copyWith(
                 fontSize: Picker.DefaultTextSize,
               ),
               child: picker.title!),
@@ -478,8 +491,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
     if (picker.confirm != null) {
       items.add(DefaultTextStyle(
           style: picker.confirmTextStyle ??
-              theme!.textTheme.button!.copyWith(
-                  color: theme!.accentColor, fontSize: Picker.DefaultTextSize),
+              theme!.textTheme.labelLarge!.copyWith(
+                  color: theme!.colorScheme.secondary,
+                  fontSize: Picker.DefaultTextSize),
           child: picker.confirm!));
     } else {
       String? _confirmText =
@@ -682,7 +696,7 @@ abstract class PickerAdapter<T> {
                     fontFamily: picker?.state?.context != null
                         ? Theme.of(picker!.state!.context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .fontFamily
                         : "",
                     fontSize: Picker.DefaultTextSize),
@@ -1132,7 +1146,12 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
   final int? minuteInterval;
 
   /// Year, month, day suffix
-  final String? yearSuffix, monthSuffix, daySuffix, hourSuffix, minuteSuffix, secondSuffix;
+  final String? yearSuffix,
+      monthSuffix,
+      daySuffix,
+      hourSuffix,
+      minuteSuffix,
+      secondSuffix;
 
   /// use two-digit year, 2019, displayed as 19
   final bool twoDigitYear;
@@ -1215,7 +1234,7 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
     if (!_needUpdatePrev) {
       // check am/pm before hour-ap
       var ap = _columnType.indexWhere((element) => element == 6);
-      if (ap >  _columnType.indexWhere((element) => element == 7)) {
+      if (ap > _columnType.indexWhere((element) => element == 7)) {
         _apBeforeHourAp = true;
         _needUpdatePrev = true;
       }
@@ -1432,7 +1451,8 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
         if (minuteInterval == null || minuteInterval! < 2)
           _text = "${intToStr(index)}${_checkStr(minuteSuffix)}";
         else
-          _text = "${intToStr(index * minuteInterval!)}${_checkStr(minuteSuffix)}";
+          _text =
+              "${intToStr(index * minuteInterval!)}${_checkStr(minuteSuffix)}";
         break;
       case 6:
         List? _ampm = strAMPM ?? PickerLocalizations.of(context).ampm;
