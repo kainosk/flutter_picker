@@ -169,8 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
         print(picker.getSelectedValues());
       }
     );
-    if (_scaffoldKey.currentState == null) return;
-    picker.show(_scaffoldKey.currentState!);
+    if (_scaffoldKey.currentState != null){
+      picker.show(_scaffoldKey.currentState!);
+    }
   }
 
   showPickerModal(BuildContext context) async {
@@ -204,47 +205,48 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   showPickerIcons(BuildContext context) {
-    if (_scaffoldKey.currentState == null) return;
-    Picker(
-        adapter: PickerDataAdapter(data: [
-          PickerItem(text: Icon(Icons.add), value: Icons.add, children: [
-            PickerItem(text: Icon(Icons.more)),
-            PickerItem(text: Icon(Icons.aspect_ratio)),
-            PickerItem(text: Icon(Icons.android)),
-            PickerItem(text: Icon(Icons.menu), children: [
-              // 测试：多加了一维数据
-              PickerItem(text: Icon(Icons.account_box)),
-              PickerItem(text: Icon(Icons.analytics)),
+    if (_scaffoldKey.currentState != null) {
+      Picker(
+          adapter: PickerDataAdapter(data: [
+            PickerItem(text: Icon(Icons.add), value: Icons.add, children: [
+              PickerItem(text: Icon(Icons.more)),
+              PickerItem(text: Icon(Icons.aspect_ratio)),
+              PickerItem(text: Icon(Icons.android)),
+              PickerItem(text: Icon(Icons.menu), children: [
+                // 测试：多加了一维数据
+                PickerItem(text: Icon(Icons.account_box)),
+                PickerItem(text: Icon(Icons.analytics)),
+              ]),
             ]),
+            PickerItem(text: Icon(Icons.title), value: Icons.title, children: [
+              PickerItem(text: Icon(Icons.more_vert)),
+              PickerItem(text: Icon(Icons.ac_unit)),
+              PickerItem(text: Icon(Icons.access_alarm)),
+              PickerItem(text: Icon(Icons.account_balance)),
+            ]),
+            PickerItem(text: Icon(Icons.face), value: Icons.face, children: [
+              PickerItem(text: Icon(Icons.add_circle_outline)),
+              PickerItem(text: Icon(Icons.add_a_photo)),
+              PickerItem(text: Icon(Icons.access_time)),
+              PickerItem(text: Icon(Icons.adjust)),
+            ]),
+            PickerItem(text: Icon(Icons.linear_scale), value: Icons.linear_scale, children: [
+              PickerItem(text: Icon(Icons.assistant_photo)),
+              PickerItem(text: Icon(Icons.account_balance)),
+              PickerItem(text: Icon(Icons.airline_seat_legroom_extra)),
+              PickerItem(text: Icon(Icons.airport_shuttle)),
+              PickerItem(text: Icon(Icons.settings_bluetooth)),
+            ]),
+            PickerItem(text: Icon(Icons.close), value: Icons.close),
           ]),
-          PickerItem(text: Icon(Icons.title), value: Icons.title, children: [
-            PickerItem(text: Icon(Icons.more_vert)),
-            PickerItem(text: Icon(Icons.ac_unit)),
-            PickerItem(text: Icon(Icons.access_alarm)),
-            PickerItem(text: Icon(Icons.account_balance)),
-          ]),
-          PickerItem(text: Icon(Icons.face), value: Icons.face, children: [
-            PickerItem(text: Icon(Icons.add_circle_outline)),
-            PickerItem(text: Icon(Icons.add_a_photo)),
-            PickerItem(text: Icon(Icons.access_time)),
-            PickerItem(text: Icon(Icons.adjust)),
-          ]),
-          PickerItem(text: Icon(Icons.linear_scale), value: Icons.linear_scale, children: [
-            PickerItem(text: Icon(Icons.assistant_photo)),
-            PickerItem(text: Icon(Icons.account_balance)),
-            PickerItem(text: Icon(Icons.airline_seat_legroom_extra)),
-            PickerItem(text: Icon(Icons.airport_shuttle)),
-            PickerItem(text: Icon(Icons.settings_bluetooth)),
-          ]),
-          PickerItem(text: Icon(Icons.close), value: Icons.close),
-        ]),
-        title: Text("Select Icon"),
-        selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
-        onConfirm: (Picker picker, List value) {
-          print(value.toString());
-          print(picker.getSelectedValues());
-        },
-    ).show(_scaffoldKey.currentState!);
+          title: Text("Select Icon"),
+          selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
+          onConfirm: (Picker picker, List value) {
+            print(value.toString());
+            print(picker.getSelectedValues());
+          },
+      ).show(_scaffoldKey.currentState!);
+    }
   }
 
 
@@ -360,49 +362,50 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   showPickerDateTime(BuildContext context) {
-    if (_scaffoldKey.currentState == null) return;
-    Picker(
-        adapter: DateTimePickerAdapter(
-          type: PickerDateTimeType.kMDYHM_AP,
-          isNumberMonth: true,
-          //strAMPM: const["上午", "下午"],
-          yearSuffix: "年",
-          monthSuffix: "月",
-          daySuffix: "日",
-          hourSuffix: "時",
-          minuteSuffix: "分",
-          secondSuffix: "秒",
-          minValue: DateTime.now(),
-          minuteInterval: 30,
-          //minHour: 1,
-          //maxHour: 23,
-          // twoDigitYear: true,
-        ),
-        title: Text("Select DateTime"),
-        textAlign: TextAlign.right,
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        delimiter: [
-          PickerDelimiter(column: 5, child: Container(
-            width: 16.0,
+    if (_scaffoldKey.currentState != null) {
+      Picker(
+          adapter: DateTimePickerAdapter(
+            type: PickerDateTimeType.kMDYHM_AP,
+            isNumberMonth: true,
+            //strAMPM: const["上午", "下午"],
+            yearSuffix: "年",
+            monthSuffix: "月",
+            daySuffix: "日",
+            hourSuffix: "時",
+            minuteSuffix: "分",
+            secondSuffix: "秒",
+            minValue: DateTime.now(),
+            minuteInterval: 30,
+            //minHour: 1,
+            //maxHour: 23,
+            // twoDigitYear: true,
+          ),
+          title: Text("Select DateTime"),
+          textAlign: TextAlign.right,
+          selectedTextStyle: TextStyle(color: Colors.blue),
+          delimiter: [
+            PickerDelimiter(column: 5, child: Container(
+              width: 16.0,
+              alignment: Alignment.center,
+              child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
+              color: Colors.white,
+            ))
+          ],
+          footer: Container(
+            height: 50.0,
             alignment: Alignment.center,
-            child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
-            color: Colors.white,
-          ))
-        ],
-        footer: Container(
-          height: 50.0,
-          alignment: Alignment.center,
-          child: Text('Footer'),
-        ),
-        onConfirm: (Picker picker, List value) {
-          print(picker.adapter.text);
-        },
-        onSelect: (Picker picker, int index, List<int> selected) {
-          setState(() {
-            stateText = picker.adapter.toString();
-          });
-        }
-    ).show(_scaffoldKey.currentState!);
+            child: Text('Footer'),
+          ),
+          onConfirm: (Picker picker, List value) {
+            print(picker.adapter.text);
+          },
+          onSelect: (Picker picker, int index, List<int> selected) {
+            setState(() {
+              stateText = picker.adapter.toString();
+            });
+          }
+      ).show(_scaffoldKey.currentState!);
+    }
   }
 
   showPickerDateRange(BuildContext context) {
@@ -466,30 +469,31 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   showPickerDateTime24(BuildContext context) {
-    if (_scaffoldKey.currentState == null) return;
-    Picker(
-        adapter: DateTimePickerAdapter(
-            type: PickerDateTimeType.kMDYHM,
-            isNumberMonth: true,
-            yearSuffix: "年",
-            monthSuffix: "月",
-            daySuffix: "日",
-            hourSuffix: "時",
-            minuteSuffix: "分",
-            secondSuffix: "秒",
-            minHour: 8,
-            maxHour: 19,
-            yearBegin: 1950,
-            yearEnd: 1998,
-        ),
-        title: Text("Select DateTime"),
-        onConfirm: (Picker picker, List value) {
-          print(picker.adapter.text);
-        },
-        onSelect: (Picker picker, int index, List<int> selected) {
-          showMsg(picker.adapter.toString());
-        }
-    ).show(_scaffoldKey.currentState!);
+    if (_scaffoldKey.currentState != null) {
+      Picker(
+          adapter: DateTimePickerAdapter(
+              type: PickerDateTimeType.kMDYHM,
+              isNumberMonth: true,
+              yearSuffix: "年",
+              monthSuffix: "月",
+              daySuffix: "日",
+              hourSuffix: "時",
+              minuteSuffix: "分",
+              secondSuffix: "秒",
+              minHour: 8,
+              maxHour: 19,
+              yearBegin: 1950,
+              yearEnd: 1998,
+          ),
+          title: Text("Select DateTime"),
+          onConfirm: (Picker picker, List value) {
+            print(picker.adapter.text);
+          },
+          onSelect: (Picker picker, int index, List<int> selected) {
+            showMsg(picker.adapter.toString());
+          }
+      ).show(_scaffoldKey.currentState!);
+    }
   }
 
   /// 圆角背景
@@ -599,16 +603,17 @@ class _MyHomePageState extends State<MyHomePage> {
             range[1] = pickedDate;
           }
         });
-    if (_scaffoldKey.currentState == null) return;
-    _scaffoldKey.currentState!.showBottomSheet((BuildContext context) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          p1.makePicker(),
-          p2.makePicker()
-        ],
-      );
-    });
+    if (_scaffoldKey.currentState != null) {
+      _scaffoldKey.currentState!.showBottomSheet((BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            p1.makePicker(),
+            p2.makePicker()
+          ],
+        );
+      });
+    }
   }
 
 }
