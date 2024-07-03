@@ -215,7 +215,8 @@ class Picker {
               actions.add(TextButton(
                   style: _getButtonStyle(ButtonTheme.of(context)),
                   onPressed: () async {
-                    if (onConfirmBefore != null && !(await onConfirmBefore!(this, selecteds))) {
+                    if (onConfirmBefore != null &&
+                        !(await onConfirmBefore!(this, selecteds))) {
                       return; // Cancel;
                     }
                     Navigator.pop<List<int>>(context, selecteds);
@@ -391,7 +392,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
                   bottom: BorderSide(color: theme!.dividerColor, width: 0.5),
                 ),
                 color: picker.headerColor == null
-                    ? (theme!.bottomAppBarColor)
+                    ? (theme!.bottomAppBarTheme.color)
                     : picker.headerColor,
               ),
         ));
@@ -437,8 +438,8 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
             overflow: TextOverflow.ellipsis,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             style: style ??
-                theme!.textTheme.button!.copyWith(
-                    color: theme!.accentColor,
+                theme!.textTheme.labelLarge!.copyWith(
+                    color: theme!.colorScheme.secondary,
                     fontSize: Picker.DefaultTextSize)));
   }
 
@@ -450,8 +451,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
     if (picker.cancel != null) {
       items.add(DefaultTextStyle(
           style: picker.cancelTextStyle ??
-              theme!.textTheme.button!.copyWith(
-                  color: theme!.accentColor, fontSize: Picker.DefaultTextSize),
+              theme!.textTheme.labelLarge!.copyWith(
+                  color: theme!.colorScheme.secondary,
+                  fontSize: Picker.DefaultTextSize),
           child: picker.cancel!));
     } else {
       String? _cancelText =
@@ -469,7 +471,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
       child: picker.title == null
           ? picker.title
           : DefaultTextStyle(
-              style: theme!.textTheme.headline6!.copyWith(
+              style: theme!.textTheme.titleLarge!.copyWith(
                 fontSize: Picker.DefaultTextSize,
               ),
               child: picker.title!),
@@ -478,8 +480,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
     if (picker.confirm != null) {
       items.add(DefaultTextStyle(
           style: picker.confirmTextStyle ??
-              theme!.textTheme.button!.copyWith(
-                  color: theme!.accentColor, fontSize: Picker.DefaultTextSize),
+              theme!.textTheme.labelLarge!.copyWith(
+                  color: theme!.colorScheme.secondary,
+                  fontSize: Picker.DefaultTextSize),
           child: picker.confirm!));
     } else {
       String? _confirmText =
@@ -682,7 +685,7 @@ abstract class PickerAdapter<T> {
                     fontFamily: picker?.state?.context != null
                         ? Theme.of(picker!.state!.context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .fontFamily
                         : "",
                     fontSize: Picker.DefaultTextSize),
