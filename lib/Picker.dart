@@ -215,7 +215,8 @@ class Picker {
               actions.add(TextButton(
                   style: _getButtonStyle(ButtonTheme.of(context)),
                   onPressed: () async {
-                    if (onConfirmBefore != null && !(await onConfirmBefore!(this, selecteds))) {
+                    if (onConfirmBefore != null &&
+                        !(await onConfirmBefore!(this, selecteds))) {
                       return; // Cancel;
                     }
                     Navigator.pop<List<int>>(context, selecteds);
@@ -317,14 +318,9 @@ class PickerWidget<T> extends InheritedWidget {
 class _PickerWidget<T> extends StatefulWidget {
   final Picker picker;
   final ThemeData? themeData;
-  final BottomAppBarTheme? bottomAppBarTheme;
   final bool isModal;
   _PickerWidget(
-      {Key? key,
-      required this.picker,
-      this.themeData,
-      this.bottomAppBarTheme,
-      required this.isModal})
+      {Key? key, required this.picker, this.themeData, required this.isModal})
       : super(key: key);
 
   @override
@@ -335,12 +331,9 @@ class _PickerWidget<T> extends StatefulWidget {
 class PickerWidgetState<T> extends State<_PickerWidget> {
   final Picker picker;
   final ThemeData? themeData;
-  final BottomAppBarTheme? bottomAppBarThemeData;
-  PickerWidgetState(
-      {required this.picker, this.themeData, this.bottomAppBarThemeData});
+  PickerWidgetState({required this.picker, this.themeData});
 
   ThemeData? theme;
-  BottomAppBarTheme? bottomAppBarTheme;
   final List<FixedExtentScrollController> scrollController = [];
   final List<StateSetter?> _keys = [];
 
@@ -368,7 +361,6 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
   Widget build(BuildContext context) {
     // print("picker build ${ref++}");
     theme = themeData ?? Theme.of(context);
-    bottomAppBarTheme = bottomAppBarThemeData ?? BottomAppBarTheme.of(context);
 
     if (_wait && picker.smooth > 0) {
       Future.delayed(Duration(milliseconds: picker.smooth), () {
@@ -400,7 +392,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
                   bottom: BorderSide(color: theme!.dividerColor, width: 0.5),
                 ),
                 color: picker.headerColor == null
-                    ? (bottomAppBarTheme!.color)
+                    ? (theme!.bottomAppBarTheme.color)
                     : picker.headerColor,
               ),
         ));
