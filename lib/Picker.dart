@@ -147,12 +147,12 @@ class Picker {
 
   /// 生成picker控件
   /// Build picker control
-  Widget makePicker([ThemeData? themeData, bool isModal = false]) {
+  Widget makePicker([ThemeData? themeData, bool isModal = false, Key? key]) {
     _maxLevel = adapter.maxLevel;
     adapter.picker = this;
     adapter.initSelects();
     _widget = PickerWidget(
-      key: ValueKey(this),
+      key: key ?? ValueKey(this),
       child:
           _PickerWidget(picker: this, themeData: themeData, isModal: isModal),
       data: this,
@@ -1135,7 +1135,12 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
   final int? minuteInterval;
 
   /// Year, month, day suffix
-  final String? yearSuffix, monthSuffix, daySuffix, hourSuffix, minuteSuffix, secondSuffix;
+  final String? yearSuffix,
+      monthSuffix,
+      daySuffix,
+      hourSuffix,
+      minuteSuffix,
+      secondSuffix;
 
   /// use two-digit year, 2019, displayed as 19
   final bool twoDigitYear;
@@ -1218,7 +1223,7 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
     if (!_needUpdatePrev) {
       // check am/pm before hour-ap
       var ap = _columnType.indexWhere((element) => element == 6);
-      if (ap >  _columnType.indexWhere((element) => element == 7)) {
+      if (ap > _columnType.indexWhere((element) => element == 7)) {
         _apBeforeHourAp = true;
         _needUpdatePrev = true;
       }
@@ -1435,7 +1440,8 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
         if (minuteInterval == null || minuteInterval! < 2)
           _text = "${intToStr(index)}${_checkStr(minuteSuffix)}";
         else
-          _text = "${intToStr(index * minuteInterval!)}${_checkStr(minuteSuffix)}";
+          _text =
+              "${intToStr(index * minuteInterval!)}${_checkStr(minuteSuffix)}";
         break;
       case 6:
         List? _ampm = strAMPM ?? PickerLocalizations.of(context).ampm;
